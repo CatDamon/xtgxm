@@ -28,7 +28,7 @@ public class MyBeetlGroupUtilConfiguration extends BeetlGroupUtilConfiguration {
     // 配置数据加载
     Configuration configuration = Configuration.defaultConfiguration();
 
-    ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("/templates") {
+    ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("/webapp") {
       @Override
       public void init(GroupTemplate gt) {
         this.setAutoCheck(true);
@@ -36,6 +36,7 @@ public class MyBeetlGroupUtilConfiguration extends BeetlGroupUtilConfiguration {
       }
     };
     groupTemplate = new GroupTemplate(resourceLoader, configuration);
+
    // groupTemplate.registerFunctionPackage("shiroTag", new SdShiro());
     if (errorHandler != null) {
       groupTemplate.setErrorHandler(errorHandler);
