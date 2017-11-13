@@ -1,0 +1,116 @@
+<html>
+  <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="keywords" content="scclui框架">
+	<meta name="description" content="scclui为轻量级的网站后台管理系统模版。">
+    <title>首页</title>
+	  <script type="text/javascript" src="/static/lib/jquery-1.9.0.min.js"></script>
+	  <link rel="stylesheet" href="/static/layui/css/layui.css">
+	  <link rel="stylesheet" href="/static/css/sccl.css">
+	  <script src="/static/layui/layui.js"></script>
+    
+  </head>
+  
+  <body class="login-bg">
+    <div class="login-box">
+        <header>
+            <h1>框架后台管理系统</h1>
+        </header>
+        <div class="login-main">
+			<form  class="layui-form" id="formLogin">
+				<input name="__RequestVerificationToken" type="hidden" value="">                
+				<div class="layui-form-item">
+					<label class="login-icon">
+						<i class="layui-icon"></i>
+					</label>
+					<input type="text" name="userName" lay-verify="userName" autocomplete="off" placeholder="这里输入登录名" class="layui-input">
+				</div>
+				<div class="layui-form-item">
+					<label class="login-icon">
+						<i class="layui-icon"></i>
+					</label>
+					<input type="password" name="password" lay-verify="password" autocomplete="off" placeholder="这里输入密码" class="layui-input">
+				</div>
+				<div class="layui-form-item">
+					<div class="pull-left login-remember">
+						<label>记住帐号？</label>
+
+						<input type="checkbox" name="rememberMe" value="true" lay-skin="switch" title="记住帐号"><div class="layui-unselect layui-form-switch"><i></i></div>
+					</div>
+					<div class="pull-right" >
+						<button class="layui-btn layui-btn-primary"  type="button" id="dl">
+							<i class="layui-icon"></i> 登录
+						</button>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</form>        
+		</div>
+        <footer>
+            <p>dxgong © 786440681@qq.com</p>
+        </footer>
+    </div>
+    
+
+    <script language="JavaScript">
+		/**页面session过期时候自动刷新整个父窗口*/
+		if(window != top){
+		    top.location.href = location.href;
+		}
+		
+		$(function(){
+			 $("#dl").on("click",function(){
+			 var userName = $("input[name=userName]").val();
+			 var password = $("input[name=password]").val();
+			 if(userName === ''){
+				 layui.use(['layer', 'form'], function () {
+			            var layer = layui.layer,
+							$ = layui.jquery,
+							form = layui.form();
+					 layer.msg('用户名不能为空', {
+						  icon: 6,
+						  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+						}, function(){
+						  return false;
+						});   
+				 });
+				 return false;
+			 }
+			 if(password === ''){
+				 layui.use(['layer', 'form'], function () {
+			            var layer = layui.layer,
+							$ = layui.jquery,
+							form = layui.form();
+					 layer.msg('密码不能为空', {
+						  icon: 6,
+						  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+						}, function(){
+						  return false;
+						});   
+				 });
+				 return false;
+			 }
+		    		$.ajax({
+		            	url:"/toLogin", 
+		            	datatype:"json",
+		            	type:"post",
+		            	data:$("#formLogin").serialize(),
+		            	success:function(data){
+		            		if("success" == data.msg){
+		            			window.location.href="/toIndex";
+		            		}
+		            	},
+		            	error:function(data){
+		            		
+		            	}
+		            });
+		    	}) 
+		});
+       
+    </script>
+  </body>
+</html>

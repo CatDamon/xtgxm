@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分配用户角色</title>
+
+    <style type="text/css">
+        .borderwg{
+            margin:3px 3px 3px 3px;
+        }
+    </style>
+</head>
+<body>
+    <form id="chmodUserPriForm">
+        <input name="userid" type="hidden" value="${userid!}">
+        <div class="am-tabs borderwg" id="doc-my-tabs" >
+            <ul class="am-tabs-nav am-nav am-nav-tabs">
+                <li class="am-active"><a href="">${username!}</a></li>
+            </ul>
+            <div class="am-tabs-bd"  style="height:365px">
+                <div class="am-tab-panel am-active">
+                    <select  multiple  data-am-selected="{searchBox: 1,maxHeight: 200}">
+                        <%for(item in roleList){%>
+                        <option  value="${item.roleid!}">${item.rolename!}</option>
+                        <%}%>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</body>
+</html>
+<script>
+    $(function() {
+
+        $('#doc-my-tabs').tabs();
+
+        // 使用默认参数
+        $('select').selected();
+
+        // 设置参数
+        $('select').selected({
+            btnWidth: '350px',
+            btnSize: 'sm',
+            btnStyle: 'primary',
+            maxHeight: '100px'
+        });
+    })
+
+</script>

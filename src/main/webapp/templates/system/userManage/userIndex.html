@@ -1,0 +1,66 @@
+<% layout("/common/layout.html"){%>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <script type="text/javascript" src="/static/js/system/userManage.js"></script>
+    <style type="text/css">
+        .divPosition{
+            padding-top:10px;
+        }
+
+
+    </style>
+</head>
+<body>
+<form class="divPosition" action="/system/userManage/toUserManage">
+    <div class="am-form divgroup">
+        <label>
+            <select name="condition" lay-verify="required">
+                <option value="-1">请选择</option>
+                <option value="username" ${username! == true?'selected':''}>用户名</option>
+            </select>
+        </label>
+        <div>
+            <input type="text" name="conditionVal" value="${conditionVal!}" class="" placeholder="请输入查询条件">
+        </div>
+        <div>
+            <button type="submit" class="am-btn am-btn-secondary">查询</button>&nbsp;&nbsp;
+            <button type="button" class="am-btn am-btn-secondary" id="addUser">添加</button>
+        </div>
+    </div>
+</form>
+
+    <div >
+        <table class="am-table am-table-bordered am-table-striped am-table-hover">
+            <thead>
+                <th>用户名</th>
+                <th>可用状态</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+            <%for(user in userList!){%>
+            <tr>
+                <td>${user.username}</td>
+                ${user.available == "已激活"?'<td style=color:green>已激活</td>':'<td style=color:red>未激活</td>'}
+                <td>
+                    <a href="javascript:;" value="${user.userid!}" available="${user.available!}" onclick="activativeAccount(this)">${user.available! == '已激活'?'冻结':'激活'}</a>
+                    <a href="javascript:;" value="${user.userid!}" username="${user.username!}" class="editUser">修改</a>
+                    <a href="javascript:;" value="${user.userid!}" username="${user.username!}" onclick="chmodPri(this)">分配角色</a>
+                    <a href="javascript:;" value="${user.userid!}"  onclick="delUser(this)">删除</a>
+                </td>
+            </tr>
+            <%}%>
+
+            </tbody>
+
+        </table>
+        <div class="pagin">
+            ${page.pageStr}
+        </div>
+    </div>
+
+</body>
+</html>
+
+<%}%>

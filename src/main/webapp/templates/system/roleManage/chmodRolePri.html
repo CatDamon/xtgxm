@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分配权限</title>
+
+    <style type="text/css">
+        .borderwg{
+            margin:3px 3px 3px 3px;
+        }
+    </style>
+</head>
+<body>
+    <form id="chmodRolePriForm">
+        <input name="roleid" type="hidden" value="${roleid!}">
+        <input name="perList" value="${perList!}" type="hidden">
+        <div class="am-tabs borderwg" id="doc-my-tabs" >
+            <ul class="am-tabs-nav am-nav am-nav-tabs">
+                <li class="am-active"><a href="">${rolename!}</a></li>
+            </ul>
+            <div class="am-tabs-bd"  style="height:365px">
+                <div class="am-tab-panel am-active">
+                    <div>
+                        <ul id="treeDemoForRolePage" class="ztree"></ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+
+</body>
+</html>
+<script>
+
+    $(function() {
+        initMenuTreeForRolePage();
+
+        $('#doc-my-tabs').tabs();
+
+
+
+    })
+
+</script>

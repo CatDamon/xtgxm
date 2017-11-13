@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MenuManageMapper">
+	<!-- 查询 -->
+	<select id="selectMenulistPage" parameterType="page" resultType="pd">
+		select * from ry_permission
+	</select>
+
+	<!-- 保存菜单 -->
+	<insert id="saveMenu" parameterType="pd">
+		insert into ry_permission(
+			per_id,
+			per_name,
+		<if test="parentid != null and parentid != ''">
+			parentid,
+		</if>
+			url,
+			orders,
+		<if test="isheader != null and isheader != ''">
+			isheader,
+		</if>
+		<if test="parentname != null and parentname != ''">
+			parentname,
+		</if>
+			ismenuorpoint
+		)values(
+			#{per_id},
+			#{per_name},
+		<if test="parentid != null and parentid != ''">
+			#{parentid},
+		</if>
+			#{url},
+			#{orders},
+		<if test="isheader != null and isheader != ''">
+			#{isheader},
+		</if>
+		<if test="parentname != null and parentname != ''">
+			#{parentname},
+		</if>
+			#{ismenuorpoint}
+		)
+	</insert>
+
+	<!-- 查询所有菜单根目录 -->
+	<select id="returnZtreeMenuRootData" parameterType="pd"  resultType="pd">
+		select
+			per_id,
+			per_name,
+			parentid,
+			parentname,
+			url,
+			icon,
+			orders,
+			isheader,
+			ismenuorpoint
+		from
+			ry_permission
+		where
+			isheader = #{isheader}
+		and
+			ismenuorpoint = #{ismenuorpoint}
+		and
+			parentid is null
+		order by orders asc
+	</select>
+
+	<select id="returnZtreeMenuSonDataByRoot" parameterType="java.util.List" resultType="pd">
+		select
+			per_id,
+			per_name,
+			parentid,
+			parentname,
+			url,
+			icon,
+			orders,
+			isheader,
+			ismenuorpoint
+		from
+			ry_permission
+		where
+			1 = 1
+		<if test="list != null and list != ''">
+			and
+				parentid in
+			<foreach collection="list" close=")" index="index" item="item" open="(" separator=",">
+				#{item.per_id}
+			</foreach>
+		</if>
+		order by orders asc
+	</select>
+
+
+	<!-- 根据权限id查询所有自权限 -->
+	<select id="findSonMenu" parameterType="pd" resultType="pd">
+		select
+			*
+		from
+			ry_permission
+		where
+			parentid = #{id}
+		order by orders asc
+	</select>
+
+	<!-- 根据权限id更新权限信息 -->
+	<update id="editPer" parameterType="pd" >
+		update ry_permission set
+			<if test="orders != null and orders != ''">
+				orders = #{orders},
+			</if>
+			per_name = #{per_name}
+	  	where
+			per_id = #{per_id}
+	</update>
+
+	<!-- 根据ID查询权限信息 -->
+	<select id="selectPer" parameterType="String" resultType="pd">
+		select
+			per_name
+		from
+			ry_permission
+		where
+			per_id = #{per_id}
+	</select>
+
+	<!-- 根据权限id删除树节点 -->
+	<delete id="delPer" parameterType="String">
+		delete from ry_permission where  per_id = #{per_id}
+	</delete>
+
+	<!-- 根据id查询是否含有子节点 -->
+	<select id="isHasSonNodes" parameterType="String" resultType="pd">
+		select per_id from ry_permission where parentid = #{per_id}
+	</select>
+
+	<!-- 查询全部根目录菜单 -->
+	<select id="selectRootMenuData" parameterType="pd" resultType="pd">
+		select
+			per_id,
+			per_name,
+			url,
+			icon,
+			orders,
+			isheader,
+			ismenuorpoint
+		  from
+		  	ry_permission
+		  where
+		  	parentid is null
+		  and
+		  	ismenuorpoint = #{ismenuorpoint}
+		  order by orders asc
+	</select>
+
+	<!-- 查询子目录菜单 -->
+	<select id="selectUnRootMenuData" parameterType="pd" resultType="pd">
+		select
+			per_id,
+			per_name,
+			parentid,
+			url,
+			icon,
+			orders,
+			isheader,
+			ismenuorpoint
+		  from
+		  	ry_permission
+		  where
+		  	ismenuorpoint = #{ismenuorpoint}
+		  and
+		  	parentid = #{per_id}
+		  order by orders asc
+	</select>
+</mapper>
