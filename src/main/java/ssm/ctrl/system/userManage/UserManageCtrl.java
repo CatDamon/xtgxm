@@ -1,6 +1,7 @@
 package ssm.ctrl.system.userManage;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,7 @@ public class UserManageCtrl extends BaseController {
 	private UserManageService userManageService;
 
 
+	@RequiresPermissions(value={"/system/userManage/toUserManage"})
 	@RequestMapping("/toUserManage")
 	public ModelAndView toUserManage (Page page) throws Exception {
 		logger.info("UserManageCtrl toUserManage...");
@@ -38,7 +40,7 @@ public class UserManageCtrl extends BaseController {
 	}
 
 	/**跳转到添加用户界面*/
-	@RequiresRoles(value={"admin", "user"})
+	@RequiresPermissions(value={"/system/userManage/toAddUser"})
 	@RequestMapping("/toAddUser")
 	public ModelAndView toAddUser () throws Exception{
 		logger.info("UserManageCtrl toAddUser...");

@@ -54,6 +54,7 @@
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" ></property>
 	</bean>
 
+
 	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
 	<bean id="txManager-base" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" ></property>
@@ -86,42 +87,9 @@
 	</bean>
 
 
+	<!-- 导入shiro -->
+	<import resource="classpath:spring-shiro.xml" />
 
-	<!-- shiro start-->
-	<!-- 安全管理器 -->
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-
-	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realm" ref="ShiroRealm" />
-	</bean>
-
-	<!-- 項目自定义的Realm -->
-	<bean id="ShiroRealm" class="ssm.common.MyShiroRealm" ></bean>
-
-	<aop:config proxy-target-class="true"></aop:config>
-	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-		<property name="securityManager" ref="securityManager"/>
-	</bean>
-
-
-	<!-- Shiro Filter 拦截器工厂 -->
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" />
-
-		<property name="loginUrl" value="/login" />
-
-		<property name="unauthorizedUrl" value="/login" />
-
-		<property name="filterChainDefinitions">
-			<value>
-				/login 								= anon
-				/toLogin							= anon
-				/static/**							= anon
-				/**  								= authc
-			</value>
-		</property>
-	</bean>
-	<!-- shiro end -->
 
 	<!-- 配置simpleExceptionResolver -->
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">

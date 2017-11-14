@@ -120,15 +120,17 @@ public class UserManageServiceImpl extends BaseServiceImpl implements UserManage
         if(roleArrs.length == 0){
             throw new SystemServiceException("无角色添加!");
         }
-        //目前的用户已经拥有的角色id
-        List<String> roleIdList = (List<String>) this.daoSupport.findForList("UserManageMapper.findRoleidByUserId",pageData);
+        pageData.put("roleArrs",roleArrs);
+        //删除目前的用户已经拥有的角色
+        this.daoSupport.delete("UserManageMapper.delRole",pageData);
+        //List<String> roleIdList = (List<String>) this.daoSupport.findForList("UserManageMapper.findRoleidByUserId",pageData);
         //目前的用户正要添加的角色id,转化成list集合
-        List<String> roleIdList2 = new ArrayList<String>();
+        /*List<String> roleIdList2 = new ArrayList<String>();
         for (String roleid2: roleArrs){
             roleIdList2.add(roleid2);
-        }
+        }*/
         //去重
-        this.distinctRoleId(pageData,roleIdList,roleIdList2);
+        //this.distinctRoleId(pageData,roleIdList,roleIdList2);
 
 
         this.daoSupport.save("UserManageMapper.saveRoleForUser",pageData);
@@ -148,6 +150,29 @@ public class UserManageServiceImpl extends BaseServiceImpl implements UserManage
         }else{
             throw new SystemServiceException("用户名不能为空！");
         }
+    }
+
+    /**
+     * 根据用户名称查询用户权限
+     *
+     * @param userName
+     */
+    @Override
+    public List<String> selectPerByUserName(String userName) throws Exception{
+        logger.info("UserManageServiceImpl selectUserByUsername...");
+        if(userName != null){
+            List<String> list = (List<String>) this.daoSupport.findForList("UserManageMapper.selectPerByUserName",userName);
+            if(list.isEmpty()){
+                throw new SystemServiceException("该用户没有权限!");
+            }else{
+
+                return list;
+            }
+
+        }else{
+            throw new SystemServiceException("用户名不能为空");
+        }
+
     }
 
     /**

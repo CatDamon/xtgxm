@@ -38,10 +38,9 @@ public class LoginCtrl extends BaseController {
 	public String loginOut() {
 		//shiro销毁登录
 		Subject subject = SecurityUtils.getSubject();
-		System.out.println("234243243");
 		subject.logout();
-		getRequest().getSession().removeAttribute(Const.SESSION_USER);
-		getRequest().getSession().removeAttribute(Const.SESSION_USERNAME);
+		subject.getSession().removeAttribute(Const.SESSION_USER);
+		subject.getSession().removeAttribute(Const.SESSION_USERNAME);
 		return "/login.html";
 	}
 	
@@ -66,18 +65,14 @@ public class LoginCtrl extends BaseController {
 		UsernamePasswordToken token = new UsernamePasswordToken(userName, CodecAndCrypUtil.MD5(userPassword));
 		try { 
 			subject.login(token);
-			map.put("msg", "success");
 			//登录成功,把user信息存到session里面 start
 			PageData loginData = this.loginService.selectUserAll(userData);
 			if(loginData != null){
 				subject.getSession().setAttribute(Const.SESSION_USER,loginData.convertToBean(User.class));
 			}
 			//end
-
-
-
 		} catch (AuthenticationException e) {
-			map.put("message", "身份验证失败");
+			map.put("error", "用户名/密码不存在或者不正确!");
 			logger.error(e.getMessage());
 			return map;
 		} catch (Exception e) {
@@ -86,7 +81,7 @@ public class LoginCtrl extends BaseController {
 		return map;
 	}
 
-	@RequiresRoles(value={"admin", "user"})
+
 	@RequestMapping("/toIndex")
 	public ModelAndView toIndex () {
 		ModelAndView mv = new ModelAndView("/common/index.html");

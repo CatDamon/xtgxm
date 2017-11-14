@@ -5,6 +5,8 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.Permission;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import ssm.exception.SystemCtrlException;
@@ -14,6 +16,8 @@ import javax.annotation.Resource;
 
 import ssm.utils.CodecAndCrypUtil;
 import ssm.utils.PageData;
+
+import java.util.List;
 
 public class MyShiroRealm extends AuthorizingRealm{
 
@@ -25,9 +29,17 @@ public class MyShiroRealm extends AuthorizingRealm{
 	 * */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
-		System.out.println("哈哈"+principal.getPrimaryPrincipal());
-
-		return null;
+		String userName = (String) principal.getPrimaryPrincipal();   //获取用户名
+		//根据用户名获取用户相关权限(用户所拥有的角色对应的权限)
+		List<String> userPerList = null;
+ 		try {
+			userPerList =  this.userManageService.selectPerByUserName(userName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+ 		info.addStringPermissions(userPerList);
+		return info;
 	}
 
 	/**

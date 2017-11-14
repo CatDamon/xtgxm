@@ -80,6 +80,7 @@
 
 	</select>
 
+
 	<!-- 根据角色id查询角色名称 -->
 	<select id="findRoleName" parameterType="list" resultType="pd">
 
@@ -97,8 +98,19 @@
 
 	</select>
 
-	<!-- 根据用户名 -->
+	<!-- 根据用户名查询用户信息 -->
 	<select id="selectUserByUsername" parameterType="String" resultType="pd">
 		select username,password from ry_user where username = #{username}
 	</select>
+
+	<!-- 根据用户名查询用户相关权限 -->
+	<select id="selectPerByUserName" parameterType="String" resultType="String">
+		  select
+			   x2.url
+			from
+				 ry_roleper x1 left join ry_permission x2 on x1.per_id = x2.per_id
+			where
+				 x1.roleid in (select q2.roleid from	ry_user q1 ,ry_userrole q2 where q1.userid = q2.userid  and q1.username = #{userName});
+	</select>
+
 </mapper>

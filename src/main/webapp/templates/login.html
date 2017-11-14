@@ -72,7 +72,7 @@
 							$ = layui.jquery,
 							form = layui.form();
 					 layer.msg('用户名不能为空', {
-						  icon: 6,
+						  icon: 5,
 						  time: 2000 //2秒关闭（如果不配置，默认是3秒）
 						}, function(){
 						  return false;
@@ -86,7 +86,7 @@
 							$ = layui.jquery,
 							form = layui.form();
 					 layer.msg('密码不能为空', {
-						  icon: 6,
+						  icon: 5,
 						  time: 2000 //2秒关闭（如果不配置，默认是3秒）
 						}, function(){
 						  return false;
@@ -100,9 +100,21 @@
 		            	type:"post",
 		            	data:$("#formLogin").serialize(),
 		            	success:function(data){
-		            		if("success" == data.msg){
-		            			window.location.href="/toIndex";
-		            		}
+		            		if(data.error != '' && data.error != undefined){
+                                layui.use(['layer', 'form'], function () {
+                                    var layer = layui.layer,
+                                        $ = layui.jquery,
+                                        form = layui.form();
+                                    layer.msg(data.error, {
+                                        icon: 5,
+                                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                                    }, function(){
+                                        return false;
+                                    });
+                                });
+		            		}else{
+                                window.location.href="/toIndex";
+							}
 		            	},
 		            	error:function(data){
 		            		

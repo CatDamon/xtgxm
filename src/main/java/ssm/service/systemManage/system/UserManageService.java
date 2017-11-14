@@ -38,6 +38,9 @@ public interface UserManageService {
 
     /**根据用户名查询用户信息*/
     public PageData selectUserByUsername(String username) throws  Exception;
+
+    /**根据用户名称查询用户权限*/
+    public List<String> selectPerByUserName(String userName) throws Exception;
 }
 
 

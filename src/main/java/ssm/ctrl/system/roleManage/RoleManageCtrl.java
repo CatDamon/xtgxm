@@ -1,5 +1,6 @@
 package ssm.ctrl.system.roleManage;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +27,7 @@ public class RoleManageCtrl extends BaseController {
     private RoleManageService roleManageService;
 
     /**跳转到角色列表*/
+    @RequiresPermissions("/system/RoleManageCtrl/toRoleIndex")
     @RequestMapping("/toRoleIndex")
     public ModelAndView toRoleIndex (Page page) throws Exception{
         logger.info("RoleManageCtrl toRoleIndex...");
@@ -38,6 +40,7 @@ public class RoleManageCtrl extends BaseController {
     }
 
     /**跳转到添加角色页面*/
+    @RequiresPermissions("/system/RoleManageCtrl/toAddRole")
     @RequestMapping("/toAddRole")
     public ModelAndView toAddRole () throws Exception{
         logger.info("RoleManageCtrl toAddRole...");
