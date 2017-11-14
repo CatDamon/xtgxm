@@ -35,6 +35,9 @@ public interface UserManageService {
 
     /**根据用户id保存对应角色*/
     public void saveRoleForUser(PageData pageData) throws Exception;
+
+    /**根据用户名查询用户信息*/
+    public PageData selectUserByUsername(String username) throws  Exception;
 }
 
 

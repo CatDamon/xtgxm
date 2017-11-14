@@ -96,4 +96,9 @@
 		</foreach>
 
 	</select>
+
+	<!-- 根据用户名 -->
+	<select id="selectUserByUsername" parameterType="String" resultType="pd">
+		select username,password from ry_user where username = #{username}
+	</select>
 </mapper>

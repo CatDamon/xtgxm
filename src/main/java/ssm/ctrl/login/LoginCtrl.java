@@ -3,6 +3,7 @@ package ssm.ctrl.login;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import ssm.ctrl.common.BaseController;
 import ssm.entity.User;
 import ssm.service.login.LoginService;
 import ssm.service.systemManage.system.MenuManageService;
+import ssm.utils.CodecAndCrypUtil;
 import ssm.utils.Const;
 import ssm.utils.PageData;
 
@@ -61,14 +63,14 @@ public class LoginCtrl extends BaseController {
 		String userPassword = userData.getString("password");
 
 		Subject subject = SecurityUtils.getSubject();
-		UsernamePasswordToken token = new UsernamePasswordToken(userName,userPassword); 
+		UsernamePasswordToken token = new UsernamePasswordToken(userName, CodecAndCrypUtil.MD5(userPassword));
 		try { 
-			subject.login(token); 
+			subject.login(token);
 			map.put("msg", "success");
 			//登录成功,把user信息存到session里面 start
 			PageData loginData = this.loginService.selectUserAll(userData);
 			if(loginData != null){
-				this.getSession().setAttribute(Const.SESSION_USER,loginData.convertToBean(User.class));
+				subject.getSession().setAttribute(Const.SESSION_USER,loginData.convertToBean(User.class));
 			}
 			//end
 
@@ -83,7 +85,8 @@ public class LoginCtrl extends BaseController {
 		}
 		return map;
 	}
-	
+
+	@RequiresRoles(value={"admin", "user"})
 	@RequestMapping("/toIndex")
 	public ModelAndView toIndex () {
 		ModelAndView mv = new ModelAndView("/common/index.html");

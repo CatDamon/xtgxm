@@ -136,6 +136,21 @@ public class UserManageServiceImpl extends BaseServiceImpl implements UserManage
     }
 
     /**
+     * 根据用户名查询用户信息
+     *
+     * @param username
+     */
+    @Override
+    public PageData selectUserByUsername(String username) throws Exception {
+        logger.info("UserManageServiceImpl selectUserByUsername...");
+        if(username != null){
+            return (PageData) this.daoSupport.findForObject("UserManageMapper.selectUserByUsername",username);
+        }else{
+            throw new SystemServiceException("用户名不能为空！");
+        }
+    }
+
+    /**
      * 去重
      * @param pageData 参数集合
      * @param roleIdList  目前的用户已经拥有的角色id

@@ -69,7 +69,7 @@
 			</div>
 		</section>
 		<div class="layout-footer">@v1.0</div>
-		<% include("/common/menuList.html"){} %>
+
 	</div>
 	<script type="text/javascript" src="/static/lib/jquery-1.9.0.min.js"></script>
 	<script type="text/javascript" src="/static/js/sccl.js"></script>
@@ -88,5 +88,11 @@
 		if($("#mainFrame")){
       		 $("#mainFrame").attr("src",url);
       	 }
+
+
 	}
+	$(function(){
+		initMenu(eval('('+'${menuJson!}'+')'),$(".side-menu"));
+		$(".side-menu > li").addClass("menu-item");
+	})
 </script>

@@ -89,6 +89,8 @@
 
 	<!-- shiro start-->
 	<!-- 安全管理器 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="ShiroRealm" />
 	</bean>
@@ -96,8 +98,13 @@
 	<!-- 項目自定义的Realm -->
 	<bean id="ShiroRealm" class="ssm.common.MyShiroRealm" ></bean>
 
+	<aop:config proxy-target-class="true"></aop:config>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager"/>
+	</bean>
 
-	<!-- Shiro Filter -->
+
+	<!-- Shiro Filter 拦截器工厂 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 

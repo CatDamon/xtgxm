@@ -172,11 +172,11 @@ $(function () {
 
 //回显已选择的权限
 function echoPri(){
-    console.log("perList:"+'${perList}');
     let list = $("input[name=perList]").val();
     const treeObj = $.fn.zTree.getZTreeObj("treeDemoForRolePage");
     let nodes = treeObj.transformToArray(treeObj.getNodes());
     let perArrs = list.split(",");
+
     nodes.forEach((item,index)=>{
         let that = item;
         perArrs.forEach((perItem,perIndex)=>{

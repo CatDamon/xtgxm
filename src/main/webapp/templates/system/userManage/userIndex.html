@@ -8,8 +8,6 @@
         .divPosition{
             padding-top:10px;
         }
-
-
     </style>
 </head>
 <body>
@@ -26,7 +24,10 @@
         </div>
         <div>
             <button type="submit" class="am-btn am-btn-secondary">查询</button>&nbsp;&nbsp;
-            <button type="button" class="am-btn am-btn-secondary" id="addUser">添加</button>
+            <shiro:hasRole name="administrator">
+                <button type="button" class="am-btn am-btn-secondary" id="addUser">添加</button>
+            </shiro:hasRole>
+
         </div>
     </div>
 </form>

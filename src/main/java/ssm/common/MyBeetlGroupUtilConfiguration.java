@@ -28,7 +28,7 @@ public class MyBeetlGroupUtilConfiguration extends BeetlGroupUtilConfiguration {
     // 配置数据加载
     Configuration configuration = Configuration.defaultConfiguration();
 
-    ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("/webapp") {
+    ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("/templates") {
       @Override
       public void init(GroupTemplate gt) {
         this.setAutoCheck(true);

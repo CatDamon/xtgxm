@@ -429,8 +429,7 @@ $(function(){
 				]}
 				];*/
 	/**menuData.data属于menuData域范围里面,记录在menuList.html*/
-	initMenu(eval('(' + menuData.data + ')'),$(".side-menu"));
-	$(".side-menu > li").addClass("menu-item");
+
 
 
 
