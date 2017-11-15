@@ -65,6 +65,7 @@ public class LoginCtrl extends BaseController {
 		UsernamePasswordToken token = new UsernamePasswordToken(userName, CodecAndCrypUtil.MD5(userPassword));
 		try { 
 			subject.login(token);
+			subject.isPermitted("/system/userManage/toUserManage");
 			//登录成功,把user信息存到session里面 start
 			PageData loginData = this.loginService.selectUserAll(userData);
 			if(loginData != null){
