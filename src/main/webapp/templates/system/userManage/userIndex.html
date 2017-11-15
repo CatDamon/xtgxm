@@ -19,14 +19,18 @@
                 <option value="username" ${username! == true?'selected':''}>用户名</option>
             </select>
         </label>
+
         <div>
             <input type="text" name="conditionVal" value="${conditionVal!}" class="" placeholder="请输入查询条件">
         </div>
+
         <div>
-            <button type="submit" class="am-btn am-btn-secondary">查询</button>&nbsp;&nbsp;
-            <shiro:hasRole name="administrator">
+            <%if(shiroTag.hasPermission("/system/userManage/toUserManage")){%>
+                <button type="submit" class="am-btn am-btn-secondary">查询</button>&nbsp;&nbsp;
+            <%}%>
+            <%if(shiroTag.hasPermission("/system/userManage/toAddUser")){%>
                 <button type="button" class="am-btn am-btn-secondary" id="addUser">添加</button>
-            </shiro:hasRole>
+            <%}%>
 
         </div>
     </div>
@@ -45,16 +49,22 @@
                 <td>${user.username}</td>
                 ${user.available == "已激活"?'<td style=color:green>已激活</td>':'<td style=color:red>未激活</td>'}
                 <td>
+                    <%if(shiroTag.hasPermission("/system/userManage/toAddUser")){%>
                     <a href="javascript:;" value="${user.userid!}" available="${user.available!}" onclick="activativeAccount(this)">${user.available! == '已激活'?'冻结':'激活'}</a>
+                    <%}%>
+                    <%if(shiroTag.hasPermission("/system/userManage/toEditUser")){%>
                     <a href="javascript:;" value="${user.userid!}" username="${user.username!}" class="editUser">修改</a>
+                    <%}%>
+                    <%if(shiroTag.hasPermission("/system/userManage/toChmodPage")){%>
                     <a href="javascript:;" value="${user.userid!}" username="${user.username!}" onclick="chmodPri(this)">分配角色</a>
+                    <%}%>
+                    <%if(shiroTag.hasPermission("/system/userManage/delUser")){%>
                     <a href="javascript:;" value="${user.userid!}"  onclick="delUser(this)">删除</a>
+                    <%}%>
                 </td>
             </tr>
             <%}%>
-
             </tbody>
-
         </table>
         <div class="pagin">
             ${page.pageStr}

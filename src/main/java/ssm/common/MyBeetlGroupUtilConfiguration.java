@@ -36,8 +36,8 @@ public class MyBeetlGroupUtilConfiguration extends BeetlGroupUtilConfiguration {
       }
     };
     groupTemplate = new GroupTemplate(resourceLoader, configuration);
-
-   // groupTemplate.registerFunctionPackage("shiroTag", new SdShiro());
+    //注册页面自定义授权函数
+    groupTemplate.registerFunctionPackage("shiroTag", new ShiroTag());
     if (errorHandler != null) {
       groupTemplate.setErrorHandler(errorHandler);
     }

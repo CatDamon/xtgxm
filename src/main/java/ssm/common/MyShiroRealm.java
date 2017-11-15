@@ -34,6 +34,7 @@ public class MyShiroRealm extends AuthorizingRealm{
 		List<String> userPerList = null;
  		try {
 			userPerList =  this.userManageService.selectPerByUserName(userName);
+			userPerList.size();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

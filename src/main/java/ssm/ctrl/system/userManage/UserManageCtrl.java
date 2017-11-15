@@ -65,6 +65,7 @@ public class UserManageCtrl extends BaseController {
 	}
 
 	/**激活*/
+	@RequiresPermissions(value={"/system/userManage/activativeAccount"})
 	@RequestMapping("/activativeAccount")
 	public ModelAndView activativeAccount() throws Exception {
 		logger.info("UserManageCtrl activativeAccount...");
@@ -76,6 +77,7 @@ public class UserManageCtrl extends BaseController {
 
 
 	/**跳转到修改用户界面*/
+	@RequiresPermissions(value={"/system/userManage/toEditUser"})
 	@RequestMapping("/toEditUser")
 	public ModelAndView toEditUser () throws Exception{
 		logger.info("UserManageCtrl toEditUser...");
@@ -102,6 +104,7 @@ public class UserManageCtrl extends BaseController {
 	}
 
 	/**删除用户*/
+	@RequiresPermissions(value={"/system/userManage/delUser"})
 	@RequestMapping("/delUser")
 	public ModelAndView delUser () throws Exception{
 		logger.info("UserManageCtrl toEditUser...");
@@ -112,6 +115,7 @@ public class UserManageCtrl extends BaseController {
 	}
 
 	/**分配用户角色*/
+	@RequiresPermissions(value={"/system/userManage/toChmodPage"})
 	@RequestMapping("/toChmodPage")
 	public ModelAndView toChmodPage () throws Exception {
 		logger.info("UserManageCtrl toChmodPage...");

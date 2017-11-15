@@ -160,15 +160,19 @@ public class UserManageServiceImpl extends BaseServiceImpl implements UserManage
     @Override
     public List<String> selectPerByUserName(String userName) throws Exception{
         logger.info("UserManageServiceImpl selectUserByUsername...");
+        List<String> returnList = new ArrayList<String>();
         if(userName != null){
             List<String> list = (List<String>) this.daoSupport.findForList("UserManageMapper.selectPerByUserName",userName);
             if(list.isEmpty()){
                 throw new SystemServiceException("该用户没有权限!");
             }else{
-
-                return list;
+                for (String url: list) {
+                    if(StringUtil.isNotBlank(url)){
+                        returnList.add(url);
+                    }
+                }
+                return returnList;
             }
-
         }else{
             throw new SystemServiceException("用户名不能为空");
         }

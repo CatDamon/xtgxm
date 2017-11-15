@@ -66,6 +66,7 @@ public class RoleManageCtrl extends BaseController {
 
 
     /**删除角色*/
+    @RequiresPermissions("/system/RoleManageCtrl/delRole")
     @RequestMapping("/delRole")
     public ModelAndView delRole() throws Exception {
         logger.info("RoleManageCtrl delRole...");
@@ -77,12 +78,14 @@ public class RoleManageCtrl extends BaseController {
 
 
     /**跳转到修改角色页面*/
+    @RequiresPermissions("/system/RoleManageCtrl/toEditRole")
     @RequestMapping("/toEditRole")
     public ModelAndView toEditRole () throws Exception{
         logger.info("RoleManageCtrl toeEditRole...");
         ModelAndView mv = new ModelAndView("/system/roleManage/editRole.html");
         return mv;
     }
+
 
     @RequestMapping("/editRole")
     @ResponseBody
@@ -100,6 +103,7 @@ public class RoleManageCtrl extends BaseController {
     }
 
     /**跳转到分配权限页面*/
+    @RequiresPermissions("/system/RoleManageCtrl/toChmodRolePri")
     @RequestMapping("/toChmodRolePri")
     public ModelAndView toChmodRolePri (){
         logger.info("RoleManageCtrl toChmodRolePri...");
