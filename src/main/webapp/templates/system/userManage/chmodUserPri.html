@@ -21,7 +21,7 @@
                 <div class="am-tab-panel am-active">
                     <select  multiple  data-am-selected="{searchBox: 1,maxHeight: 200}">
                         <%for(item in roleList){%>
-                        <option  value="${item.roleid!}">${item.rolename!}</option>
+                        <option  value="${item.roleid!}" ${item.selected}>${item.rolename!}</option>
                         <%}%>
                     </select>
                 </div>

@@ -120,8 +120,20 @@ public class UserManageCtrl extends BaseController {
 	public ModelAndView toChmodPage () throws Exception {
 		logger.info("UserManageCtrl toChmodPage...");
 		ModelAndView mv =  new ModelAndView("/system/userManage/chmodUserPri.html");
+		PageData pd = this.getPageData();
+		//查询全部角色
 		List<PageData> roleList = this.userManageService.findAllRole();
+		//查询该用户角色,方便回显
+		List<PageData> userRoleList = this.userManageService.selectRoleByUser(pd);
+		for(PageData allrole : roleList){
+			for(PageData userRole : userRoleList){
+				if(allrole.getString("roleid").equals(userRole.getString("roleid"))){
+					allrole.put("selected","selected");
+				}
+			}
+		}
 		mv.addObject("username",this.getPageData().getString("username"));
+		//mv.addObject("userRoleList",userRoleList);
 		mv.addObject("roleList",roleList);
 		return mv;
 	}

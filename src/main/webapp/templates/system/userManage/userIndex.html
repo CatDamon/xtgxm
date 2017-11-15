@@ -13,11 +13,13 @@
 <body>
 <form class="divPosition" action="/system/userManage/toUserManage">
     <div class="am-form divgroup">
+
         <label>
-            <select name="condition" lay-verify="required">
+            <select name="condition" data-am-selected>
                 <option value="-1">请选择</option>
                 <option value="username" ${username! == true?'selected':''}>用户名</option>
             </select>
+
         </label>
 
         <div>

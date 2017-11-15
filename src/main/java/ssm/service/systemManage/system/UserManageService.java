@@ -41,6 +41,9 @@ public interface UserManageService {
 
     /**根据用户名称查询用户权限*/
     public List<String> selectPerByUserName(String userName) throws Exception;
+
+    /**根据用户id查询用户角色*/
+    public List<PageData> selectRoleByUser(PageData pageData) throws Exception;
 }
 
 

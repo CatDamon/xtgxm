@@ -114,4 +114,9 @@
 
 	</select>
 
+	<!-- 根据用户id查询角色 -->
+	<select id="selectRoleByUser" parameterType="pd"  resultType="pd">
+		select userid,roleid from ry_userrole where userid = #{userid}
+	</select>
+
 </mapper>

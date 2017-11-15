@@ -122,7 +122,7 @@ function chmodPri (obj){
             }
             var userid = $(obj).attr('value');
             $.ajax({
-                url: "/system/userManage/toChmodPage?username="+username,
+                url: "/system/userManage/toChmodPage?username="+username+"&userid="+userid,
                 type: "GET"
             }).done(function (data) {
                 layer.open({

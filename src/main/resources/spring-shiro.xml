@@ -9,9 +9,35 @@
 
 
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 会话Cookie模板 -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="sid"/>
+        <property name="httpOnly" value="true"/> <!-- 设置为true，则客户端不会暴露给客户端脚本代码 -->
+        <property name="maxAge" value="180000"/>  <!-- 设置Cookie的过期时间，秒为单位 -->
+    </bean>
+    <!-- 会话管理器 -->
+    <bean id="sessionManager"
+          class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="globalSessionTimeout" value="1800000"/> <!-- 话的全局过期时间（毫秒为单位），默认30分钟 -->
+        <property name="sessionValidationSchedulerEnabled" value="true"/> <!-- 是否开启会话验证器，默认是开启的 -->
+        <!--<property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>  设置会话验证调度器，默认就是使用 -->
+        <property name="sessionIdCookieEnabled" value="true"/> <!-- 默认使用了Servlet容器的JSESSIONID -->
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+    </bean>
+
+    <!-- 会话验证调度器 -->
+    <!--<bean id="sessionValidationScheduler"
+          class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+        <property name="sessionValidationInterval" value="1800000"/> &lt;!&ndash; 半个小时自动调用 &ndash;&gt;
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>-->
+
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="ShiroRealm" />
+        <property name="sessionManager" ref="sessionManager"/>
+        <!--<property name="cacheManager" ref="cacheManager"/>-->
     </bean>
 
     <!-- 項目自定义的Realm -->
@@ -43,10 +69,5 @@
     </bean>
 
 
-
-
-
-
-    <!-- Shiro的注解配置一定要放在spring-mvc中 -->
 
 </beans>

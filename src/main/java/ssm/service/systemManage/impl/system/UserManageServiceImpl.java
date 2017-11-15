@@ -180,6 +180,22 @@ public class UserManageServiceImpl extends BaseServiceImpl implements UserManage
     }
 
     /**
+     * 根据用户id查询用户角色
+     *
+     * @param pageData
+     */
+    @Override
+    public List<PageData> selectRoleByUser(PageData pageData) throws Exception {
+        logger.info("UserManageServiceImpl selectRoleByUser...");
+        if(StringUtil.isNotBlank(pageData.getString("userid"))){
+          return (List<PageData>) this.daoSupport.findForList("UserManageMapper.selectRoleByUser",pageData);
+        }else{
+            throw new SystemServiceException("用户id不能为空!");
+        }
+
+    }
+
+    /**
      * 去重
      * @param pageData 参数集合
      * @param roleIdList  目前的用户已经拥有的角色id

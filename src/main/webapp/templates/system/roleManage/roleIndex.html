@@ -17,7 +17,7 @@
 <form class="divPosition" action="/system/RoleManageCtrl/toRoleIndex">
     <div class="am-form divgroup">
         <label>
-            <select name="condition" lay-verify="required">
+            <select name="condition" data-am-selected>
                 <option value="-1">请选择</option>
                 <option value="rolename" ${rolename! == true?'selected':''} >角色名</option>
             </select>
