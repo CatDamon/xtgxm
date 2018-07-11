@@ -83,6 +83,9 @@ public class LoginCtrl extends BaseController {
 	}
 
 
+	/**
+	 * 跳转首页
+	 * */
 	@RequestMapping("/toIndex")
 	public ModelAndView toIndex () {
 		ModelAndView mv = new ModelAndView("/common/index.html");
