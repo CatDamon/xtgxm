@@ -11,6 +11,7 @@ import ssm.state.IsMenuOrPointState;
 import ssm.utils.Page;
 import ssm.utils.PageData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -31,28 +32,63 @@ public class MenuManageServiceImpl extends BaseServiceImpl implements MenuManage
     public Object getMenuJson(PageData pageData) throws Exception {
         logger.info("MenuManageServiceImpl getMenuJson...");
         StringBuilder sb = new StringBuilder();
+
+        if (StringUtil.isBlank(pageData.getString("userId"))) {
+            return sb.toString();
+        }
         pageData.put("ismenuorpoint",IsMenuOrPointState.CDQX.getType_code());
         pageData.put("isheader",IsHeaderState.GML.getType_code());  //父级类别
         //查询根目录
         List<PageData> rootList = (List<PageData>) this.daoSupport.findForList("MenuManageMapper.selectRootMenuData",pageData);
         sb.append("[");
         for (int i =0;i < rootList.size(); i++){
-            recursiveSonMenuData(rootList.get(i),sb);
+            recursiveSonMenuData(rootList.get(i),sb, pageData.getString("userId"));
             if(i != (rootList.size()-1)){ //判断最后一个元素不需要加,号
                 sb.append(",");
             }
         }
         sb.append("]");
+
+
         return sb.toString();
     }
 
+    /**
+     * 获取当前登录用户父级菜单
+     * */
+    private List<PageData> getLoginUserMenu (List<PageData> rootList, String userId) throws Exception {
+        // 查询该用户所拥有的父级菜单
+        List<PageData> list = new ArrayList<>();
+        List<PageData> userMenuList = (List<PageData>) this.daoSupport.findForList("MenuManageMapper.selectPersonMenu", userId);
+
+        for (PageData pd : userMenuList) {
+            for (PageData rootPd : rootList) {
+                if (StringUtil.isBlank(pd.getString("per_id"))) {
+                    continue;
+                }
+                if (pd.getString("per_id").equals(rootPd.getString("per_id"))) {
+                    list.add(rootPd);
+                }
+            }
+        }
+
+        return list;
+
+    }
+
+
     /**递归获取子菜单*/
-    private StringBuilder recursiveSonMenuData(PageData fatherData,StringBuilder sb){
+    private StringBuilder recursiveSonMenuData(PageData fatherData,StringBuilder sb, String userId){
         List<PageData> sonList = null;
         try {
             //获取该菜单的子节点
             fatherData.put("ismenuorpoint",IsMenuOrPointState.CDQX.getType_code());
             sonList = (List<PageData>) this.daoSupport.findForList("MenuManageMapper.selectUnRootMenuData",fatherData);
+
+            // 判断该用户是否有该子节点权限
+            sonList = getLoginUserMenu(sonList,userId);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,7 +118,7 @@ public class MenuManageServiceImpl extends BaseServiceImpl implements MenuManage
             //递归获取子节点
             for(int j =0; j<sonList.size(); j++){
                 PageData pd = sonList.get(j);
-                recursiveSonMenuData(pd,sb);
+                recursiveSonMenuData(pd,sb,userId);
                 if(j != (sonList.size()-1)){ //判断最后一个元素后不需要加,号
                     sb.append(",");
                 }

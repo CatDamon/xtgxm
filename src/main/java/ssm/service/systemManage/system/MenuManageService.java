@@ -13,6 +13,7 @@ public interface MenuManageService {
     /**根据登录用户动态生成左侧菜单*/
     public Object getMenuJson(PageData pageData)throws Exception;
 
+
     /**查询全部权限*/
     public List<PageData> selectMenu(Page page)throws Exception;
 

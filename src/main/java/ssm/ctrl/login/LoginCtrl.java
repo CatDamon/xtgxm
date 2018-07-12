@@ -90,8 +90,13 @@ public class LoginCtrl extends BaseController {
 	public ModelAndView toIndex () {
 		ModelAndView mv = new ModelAndView("/common/index.html");
 		/**根据登录用户动态生成左侧栏权限菜单,集成shiro以后要封装到shirorame里面*/
+
+		// 获取用户id
+		String userId = this.getUser().getUserid();
+		PageData pageData = new PageData();
+		pageData.put("userId", userId);
 		try {
-			this.getRequest().setAttribute(Const.SESSION_MENUJSON,this.menuManageService.getMenuJson(new PageData()));
+			this.getRequest().setAttribute(Const.SESSION_MENUJSON,this.menuManageService.getMenuJson(pageData));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

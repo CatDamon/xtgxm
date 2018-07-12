@@ -151,6 +151,19 @@
 		  order by orders asc
 	</select>
 
+	<!-- 根据用户查询父级菜单 -->
+	<select id="selectPersonMenu" parameterType="String" resultType="pd">
+		select
+		  rp.*
+		from
+			ry_roleper rp, ry_userrole ur
+		where
+		  ur.userid = #{userId}
+		and
+		  rp.roleid = ur.roleid
+
+	</select>
+
 	<!-- 查询子目录菜单 -->
 	<select id="selectUnRootMenuData" parameterType="pd" resultType="pd">
 		select
